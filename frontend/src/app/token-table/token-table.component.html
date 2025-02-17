@@ -1,0 +1,49 @@
+<div>
+  <h2>Tabla de Tokens</h2>
+
+  <!-- Filtros -->
+  <div>
+    <label for="filterCliente">Filtrar por Cliente:</label>
+    <input
+      id="filterCliente"
+      [(ngModel)]="filterCliente"
+      (input)="aplicarFiltros()"
+      placeholder="Cliente"
+    />
+
+    <label for="filterUsado">Filtrar por Usado:</label>
+    <select
+      id="filterUsado"
+      [(ngModel)]="filterUsado"
+      (change)="aplicarFiltros()"
+    >
+      <option value="">Todos</option>
+      <option value="true">Sí</option>
+      <option value="false">No</option>
+    </select>
+  </div>
+
+  <!-- Tabla de Tokens -->
+  <table>
+    <thead>
+      <tr>
+        <th>Cliente</th>
+        <th>Token</th>
+        <th>Usado</th>
+        <th>Fecha Generación</th>
+        <th>Fecha Uso</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let token of filteredTokens">
+        <td>{{ token.cliente }}</td>
+        <td>{{ token.token }}</td>
+        <td>{{ token.usado ? "Sí" : "No" }}</td>
+        <td>{{ token.fechaGeneracion | date : "medium" }}</td>
+        <td>
+          {{ token.fechaUso ? (token.fechaUso | date : "medium") : "No usado" }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
