@@ -1,49 +1,45 @@
 <div>
-  <h2>Tabla de Tokens</h2>
+    <h2>Tabla de Tokens</h2>
 
-  <!-- Filtros -->
-  <div>
-    <label for="filterCliente">Filtrar por Cliente:</label>
-    <input
-      id="filterCliente"
-      [(ngModel)]="filterCliente"
-      (input)="aplicarFiltros()"
-      placeholder="Cliente"
-    />
+    <!-- Filtros -->
+    <div class="filters">
+        <input type="text" [(ngModel)]="filterCliente" (ngModelChange)="aplicarFiltros()" placeholder="Filtrar por cliente" />
+        <select [(ngModel)]="filterUsado" (ngModelChange)="aplicarFiltros()">
+            <option value="">Todos</option>
+            <option value="true">Usados</option>
+            <option value="false">No usados</option>
+        </select>
+    </div>
 
-    <label for="filterUsado">Filtrar por Usado:</label>
-    <select
-      id="filterUsado"
-      [(ngModel)]="filterUsado"
-      (change)="aplicarFiltros()"
-    >
-      <option value="">Todos</option>
-      <option value="true">Sí</option>
-      <option value="false">No</option>
-    </select>
-  </div>
-
-  <!-- Tabla de Tokens -->
-  <table>
-    <thead>
-      <tr>
-        <th>Cliente</th>
-        <th>Token</th>
-        <th>Usado</th>
-        <th>Fecha Generación</th>
-        <th>Fecha Uso</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let token of filteredTokens">
-        <td>{{ token.cliente }}</td>
-        <td>{{ token.token }}</td>
-        <td>{{ token.usado ? "Sí" : "No" }}</td>
-        <td>{{ token.fechaGeneracion | date : "medium" }}</td>
-        <td>
-          {{ token.fechaUso ? (token.fechaUso | date : "medium") : "No usado" }}
-        </td>
-      </tr>
-    </tbody>
-  </table>
+    <!-- Tabla de Tokens -->
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Cliente</th>
+                <th>Token</th>
+                <th>Fecha Generación</th>
+                <th>Fecha Uso</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let token of filteredTokens">
+                <td>{{ token.id }}</td>
+                <td>{{ token.usuario.nombre }}</td>
+                <td>{{ token.codigo }}</td>
+                <td>{{ token.fechaGeneracion | date:'medium' }}</td>
+                <td>{{ token.fechaUso ? (token.fechaUso | date:'medium') : 'No usado' }}</td>
+                <td [class.usado]="token.usado" [class.no-usado]="!token.usado">
+                    {{ token.usado ? 'Usado' : 'No usado' }}
+                </td>
+                <td>
+                    <button *ngIf="puedeUsarToken(token)" (click)="usarToken(token)" class="use-button">
+                        Usar Token
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>

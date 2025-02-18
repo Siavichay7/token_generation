@@ -19,7 +19,24 @@ export class TokenController {
   }
 
   @Get('tokens')
-  async obtenerTokens(): Promise<any[]> {
-    return this.tokenService.obtenerTokens();
+  async obtenerTokens() {
+    try {
+      const tokens = await this.tokenService.obtenerTokens();
+      return tokens.map((token) => ({
+        id: token.id,
+        codigo: token.codigo,
+        usado: token.usado,
+        fechaGeneracion: token.fechaGeneracion,
+        fechaUso: token.fechaUso,
+        usuario: {
+          id: token.usuario.id,
+          nombre: token.usuario.nombre,
+          fechaCreacion: token.usuario.fechaCreacion,
+        },
+      }));
+    } catch (error) {
+      console.error('Error al obtener tokens:', error);
+      throw error;
+    }
   }
 }

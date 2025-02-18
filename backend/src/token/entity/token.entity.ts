@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Usuario } from '../../usuario/entity/usuario.entity';
 
 @Entity()
 export class Token {
@@ -6,17 +7,17 @@ export class Token {
   id: number;
 
   @Column()
-  cliente: string;
+  codigo: string;
 
-  @Column()
-  token: string;
-
-  @Column()
+  @Column({ default: false })
   usado: boolean;
 
-  @Column()
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   fechaGeneracion: Date;
 
-  @Column()
+  @Column({ nullable: true })
   fechaUso: Date;
+
+  @ManyToOne(() => Usuario, (usuario) => usuario.tokens, { eager: true })
+  usuario: Usuario;
 }

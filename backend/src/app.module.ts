@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppService } from './app.service';
 import { Token } from './token/entity/token.entity';
-import { TokenController } from './token/token.controller';
-import { TokenService } from './token/token.service';
+import { TokenModule } from './token/token.module';
+import { Usuario } from './usuario/entity/usuario.entity';
+import { UsuarioModule } from './usuario/usuario.module';
 
 @Module({
   imports: [
@@ -12,15 +11,15 @@ import { TokenService } from './token/token.service';
       type: 'postgres',
       host: 'localhost',
       port: 5432,
-      username: 'your_username',
-      password: 'your_password',
-      database: 'token_db',
-      entities: [Token],
-      synchronize: true,
+      username: 'postgres',
+      password: '123456',
+      database: 'Catalog',
+      entities: [Token, Usuario],
+      synchronize: false,
+      logging: true,
     }),
-    TypeOrmModule.forFeature([Token]),
+    TokenModule,
+    UsuarioModule,
   ],
-  controllers: [AppController, TokenController],
-  providers: [AppService, TokenService],
 })
 export class AppModule {}
